@@ -1,17 +1,25 @@
-import { AuthProvider, useAuth } from './context/AuthContext';
-import Register from './pages/Register';
-import Dashboard from './pages/Dashboard';
-
-const AppContent = () => {
-  const { user, loading } = useAuth();
-  if (loading) return null;
-  return user ? <Dashboard /> : <Register />;
-};
+import React from "react";
+import { auth } from "./firebase";
 
 export default function App() {
+  const handleLogin = async () => {
+    try {
+      await auth.signInAnonymously();
+      alert("Logged in anonymously!");
+    } catch (err) {
+      console.error(err);
+      alert("Login failed");
+    }
+  };
+
   return (
-    <AuthProvider>
-      <AppContent />
-    </AuthProvider>
+    <div className="h-screen flex items-center justify-center text-white">
+      <button
+        onClick={handleLogin}
+        className="px-6 py-3 bg-amber-500 rounded-lg font-bold"
+      >
+        Login Anonymously
+      </button>
+    </div>
   );
 }
